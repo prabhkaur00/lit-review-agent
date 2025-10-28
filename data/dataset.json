@@ -1,0 +1,47 @@
+[
+  {
+    "id": "0001",
+    "question": "What are the reported lattice parameters (approximated) for ZrTe₅ along the a, b, and c directions?",
+    "answer": "a ≈ 4.0 Å; interlayer spacing along b ≈ 7.3 Å; along c ≈ 6.9 Å (text, p.2)."
+  },
+  {
+    "id": "0002",
+    "question": "What is the bulk band gap measured at 200 K on the top a–c surface?",
+    "answer": "≈32 meV (Fig. 1f, p.3; also text, p.2–3)."
+  },
+  {
+    "id": "0003",
+    "question": "What temperature cycle was used to check band-structure stability?",
+    "answer": "20 K → 200 K → 20 K (Fig. 1h, p.3; text, p.2–3)."
+  },
+  {
+    "id": "0004",
+    "question": "What vacuum levels were compared in ARPES when discussing spurious band shifts?",
+    "answer": "~1 × 10⁻¹¹ Torr (better) vs ~7 × 10⁻¹¹ Torr (worse) (text, p.2–3)."
+  },
+  {
+    "id": "0005",
+    "question": "What is the approximate width of the cleaved side-surface area with high photoelectron intensity seen by nano-ARPES mapping?",
+    "answer": "≈50 μm (Fig. 2a, p.4)."
+  },
+  {
+    "id": "0006",
+    "question": "What are the spot sizes used for laser-based micro-ARPES and synchrotron nano-ARPES?",
+    "answer": "~50 μm (micro-ARPES) and <1 μm (nano-ARPES) (text, p.2; Methods & Fig. 2 caption, p.4–5)."
+  },
+  {
+    "id": "0007",
+    "question": "What photon energy was used for the synchrotron-based nano-ARPES?",
+    "answer": "74 eV (Fig. 2b caption & Methods, p.4–5)."
+  },
+  {
+    "id": "0008",
+    "question": "What photon energy was used for the laser-based ARPES?",
+    "answer": "6.994 eV (Methods, p.5)."
+  },
+  {
+    "id": "0009",
+    "question": "What were the angle and energy resolutions for ARPES vs spin-resolved ARPES?",
+    "answer": "ARPES: 0.3° and ~5 meV; spin-resolved ARPES: 0.7° and ~30 meV (Methods, p.5)."
+  }
+]

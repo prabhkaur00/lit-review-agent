@@ -1,0 +1,42 @@
+[
+{
+"id": "Q1",
+"question": "By how much does the trilayer ZrTe₅ film band gap in the polar phase exceed the unstrained bulk gap reported by ARPES?",
+"answer": "11 meV higher (39 meV in trilayer film vs 28 meV bulk; from Fig. 2(a) text, Paper 2; Fig. 3b2, Paper 1)."
+},
+{
+"id": "Q2",
+"question": "Under tensile strain, Paper 1 reports a bulk band gap of ~61 meV. How much larger is this than the trilayer-film gap (39 meV), and by what percentage?",
+"answer": "22 meV larger (~56% higher) (61 meV under tensile strain in Fig. 3b4, Paper 1; 39 meV in Fig. 2(a) text, Paper 2)."
+},
+{
+"id": "Q3",
+"question": "What compressive strain fraction produces a Dirac semimetal (DS) in bulk ZrTe₅ (Paper 1), and how does this small lattice change compare to the interlayer sliding displacement that stabilizes the polar trilayer (Paper 2) as a fraction of the bulk c-axis spacing?",
+"answer": "DS at ~0.25% compression; the trilayer’s sliding is 0.255 Å along c, which is ~3.7% of the bulk c ≈ 6.9 Å (≈14.8× larger fractional geometric shift than the DS-triggering strain)."
+},
+{
+"id": "Q4",
+"question": "For equal-magnitude ±0.7% strains (Paper 1), what are the predicted gaps of the STI and WTI states, and what are their difference and ratio?",
+"answer": "18 meV (STI at −0.7% compression) vs ~70 meV (WTI at +0.7% stretch); difference ≈ 52 meV and ratio ≈ 3.9 (70/18)."
+},
+{
+"id": "Q5",
+"question": "What fraction of the smallest reported bulk ARPES gap does the trilayer ferroelectric switching barrier represent?",
+"answer": "~8.9% (2.5 meV per unit cell switching barrier in trilayer divided by 28 meV bulk gap without strain)."
+},
+{
+"id": "Q6",
+"question": "Using Paper 1’s crystallography and Paper 2’s sliding, what percentage of (i) the interlayer spacing along b and (ii) the in-plane c lattice constant is the 0.255 Å sliding displacement?",
+"answer": "(i) ~3.5% of b-direction layer spacing (0.255 Å / 7.3 Å), (ii) ~3.7% of c (0.255 Å / 6.9 Å)."
+},
+{
+"id": "Q7",
+"question": "Relative to the trilayer gap (39 meV), how many times larger is the maximum tensile-strain bulk gap (61 meV) and how many times larger is it than the trilayer switching barrier (2.5 meV)?",
+"answer": "~1.56× larger than 39 meV; ~24.4× larger than 2.5 meV."
+},
+{
+"id": "Q8",
+"question": "Paper 2 predicts a Berry-curvature-dipole (BCD) peak |Dxz| of 0.139 Å at μ ≈ 0.114 eV and estimates a low-frequency nonlinear Hall conductivity |χ₀xxy| ≈ 1.46×10⁻¹³ A·m·V⁻² (with τ ≈ 57 fs). Combining this with Paper 1’s strain tunability that expands the bulk gap to 61 meV, what is the numeric ΔE between that tensile-strain gap edge and the chemical potential where the larger BCD peak appears?",
+"answer": "~53 meV (0.114 eV – 0.061 eV)."
+}
+]

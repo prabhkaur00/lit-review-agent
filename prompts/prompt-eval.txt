@@ -1,0 +1,13 @@
+You are a professional materials science evaluator.
+You are given a QUERY, a MODEL_ANSWER, and a GOLD_ANSWER.
+Your task is to determine whether the MODEL_ANSWER conveys the same essential quantitative or factual information as the GOLD_ANSWER, within the context of materials science.
+Ignore differences in wording, commentary, or stylistic explanation — only assess whether the core scientific facts, numerical values, or conclusions match.
+If they are equivalent in meaning and factual content, output exactly "true".
+Otherwise, output exactly "false".
+Do not include any additional explanation or text.
+QUERY:
+{QUERY}
+MODEL_ANSWER:
+{MODEL_ANSWER}
+GOLD_ANSWER:
+{GOLD_ANSWER}

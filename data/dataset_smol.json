@@ -1,0 +1,18 @@
+[
+  {
+    "id": "0001",
+    "question": "What are the reported lattice parameters (approximated) for ZrTe₅ along the a, b, and c directions?",
+    "answer": "a ≈ 4.0 Å; interlayer spacing along b ≈ 7.3 Å; along c ≈ 6.9 Å (text, p.2)."
+  },
+  {
+    "id": "0002",
+    "question": "What is the bulk band gap measured at 200 K on the top a–c surface?",
+    "answer": "≈32 meV (Fig. 1f, p.3; also text, p.2–3)."
+  },
+  {
+    "id": "0003",
+    "question": "What temperature cycle was used to check band-structure stability?",
+    "answer": "20 K → 200 K → 20 K (Fig. 1h, p.3; text, p.2–3)."
+  }
+  
+]
