@@ -78,7 +78,8 @@ def run(
     for i, ex in enumerate(dataset_items, 1):
         q, gold = ex["question"], ex["answer"]
         ex_id = ex.get("id", f"Q{i}")
-        print(f"[{i}/{len(dataset_items)}] Evaluating {ex_id}: {q[:80].replace('\n',' ')}", flush=True)
+        short_q = q[:80].replace("\n", " ")
+        print(f"[{i}/{len(dataset_items)}] Evaluating {ex_id}: {short_q}", flush=True)
         q, gold = ex["question"], ex["answer"]
 
         content = [{"type": "input_text", "text": f"{q}\n"}]
