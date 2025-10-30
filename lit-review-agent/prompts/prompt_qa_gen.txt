@@ -55,3 +55,9 @@ findings?". Output Format: Please provide the output as a
 numbered list of question-answer pairs. For answers derived from 
 a figure or table, please cite it (e.g., "Answer: 28 meV (from text)",
 "Answer: ~140 cm⁻¹ (from Figure 2b)").
+
+An example of question-answer as it should appear in your output is below.
+Stick to the exact same syntax for every question, only increment the index numbers.
+1. Question: What is the bulk band gap reported for ZrTe₅ at 200 K?
+   Answer: Approximately 32 meV (from text).
+

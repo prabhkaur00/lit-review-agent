@@ -1,6 +1,7 @@
 # qna_parse.py
 import re
 from pathlib import Path
+import json
 
 def load_json(p): return json.load(open(p, "r", encoding="utf-8"))
 
@@ -42,43 +43,69 @@ def read_text_auto(path_like) -> str:
         raise ValueError("read_text_auto(): JSON is structured; use load_json for .json.")
     return _read_txt(p)
 
-# qna_parse.py
-import json
-from pathlib import Path
-
 def load_pairs_from_path(path: str):
     p = Path(path)
-    with p.open("r", encoding="utf-8") as f:
-        obj = json.load(f)
+    ext = p.suffix.lower()
 
-    # Accept both formats:
-    # 1) Flat array: [ {question, answer, id?}, ... ]
-    # 2) Wrapped: { "papers": [...], "items": [ {question, answer, id?}, ... ] }
-    if isinstance(obj, dict) and isinstance(obj.get("items"), list):
-        data = obj["items"]
-    elif isinstance(obj, list):
-        data = obj
-    else:
-        raise ValueError(
-            "Unsupported dataset format. Expected a list of QA objects or "
-            'a dict with an "items" list.'
-        )
+    if ext == ".json":
+        with p.open("r", encoding="utf-8-sig") as f:
+            obj = json.load(f)
 
-    out = []
-    for i, ex in enumerate(data):
-        if not isinstance(ex, dict):
-            raise ValueError(f"Item {i} is not an object: {type(ex)}")
-        q = (ex.get("question") or "").strip()
-        a = (ex.get("answer") or "").strip()
-        if not q or not a:
-            # Skip or raise; choose policy. Here we raise to catch dataset issues early.
-            raise ValueError(f"Item {i} missing question/answer")
-        out.append({
-            "id": ex.get("id") or f"Q{i+1}",
-            "question": q,
-            "answer": a,
-        })
-    return out
+        # Accept both formats:
+        # 1) Flat array: [ {question, answer, id?}, ... ]
+        # 2) Wrapped: { "papers": [...], "items": [ {question, answer, id?}, ... ] }
+        if isinstance(obj, dict) and isinstance(obj.get("items"), list):
+            data = obj["items"]
+        elif isinstance(obj, list):
+            data = obj
+        else:
+            raise ValueError(
+                "Unsupported JSON format. Expected a list of QA objects or "
+                'a dict with an "items" list.'
+            )
+
+        out = []
+        for i, ex in enumerate(data):
+            if not isinstance(ex, dict):
+                raise ValueError(f"Item {i} is not an object: {type(ex)}")
+            q = (ex.get("question") or "").strip()
+            a = (ex.get("answer") or "").strip()
+            if not q or not a:
+                raise ValueError(f"Item {i} missing question/answer")
+            out.append({"id": ex.get("id") or f"Q{i+1}", "question": q, "answer": a})
+        return out
+    
+    if ext == ".docx":
+        try:
+            from docx import Document  # python-docx
+        except ImportError as e:
+            raise RuntimeError("python-docx is required to read DOCX datasets: pip install python-docx") from e
+
+        doc = Document(str(p))
+        # Concatenate paragraphs to preserve order; header like "Papers: ..." may be present—harmless.
+        text = "\n".join((para.text or "") for para in doc.paragraphs)
+
+        # Prefer structured parser if available
+        items = []
+        try:
+            # If extract_qna_labeled is defined in your package, use it
+            from qna_parse import extract_qna_labeled  # safe if same module/package
+            items = extract_qna_labeled(text) or []
+        except Exception:
+            pass
+
+        # Fallback: labeled "Question:" / "Answer:" blocks
+        if not items:
+            blocks = re.findall(
+                r"Question:\s*(.+?)\n\s*Answer:\s*(.+?)(?=\n\s*Question:|\Z)",
+                text, flags=re.S | re.I
+            )
+            items = [{"question": q.strip(), "answer": a.strip()} for q, a in blocks]
+
+        out = [{"id": f"Q{i+1}", "question": it["question"], "answer": it["answer"]} for i, it in enumerate(items)]
+        return out
+
+    raise ValueError(f"Unsupported dataset extension: {ext} (use .json, .jsonl, or .docx)")
 
 
 def infer_pdfs_from_dataset(dataset_path: str) -> list[str]:

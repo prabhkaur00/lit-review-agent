@@ -95,6 +95,7 @@ def generate_qa(client: OpenAI,
         content.append({"type": "input_file", "file_id": f.id})
 
     # Call model
+    print(f"Sending request to {model} with {n} papers...")
     resp = client.responses.create(
         model=model,
         instructions=prompt,
@@ -137,8 +138,8 @@ def main():
                     help="Instruction prompt for SINGLE-PDF QA.")
     ap.add_argument("--prompt_multi", default=DEF_PROMPT_GEN_MULTI,
                     help="Instruction prompt for MULTI-PDF (cross-paper) QA.")
-    ap.add_argument("--model", default="gpt-4o", help="Model for QA generation.")
-    ap.add_argument("--out-dir", default="out", help="Directory to write outputs.")
+    ap.add_argument("--model", default="gpt-5", help="Model for QA generation.")
+    ap.add_argument("--out-dir", default="data", help="Directory to write outputs.")
     ap.add_argument("--id-prefix", default="Q", help="ID prefix for items.")
     ap.add_argument("--max-items", type=int, default=None, help="Cap number of QAs in the output.")
     ap.add_argument("--docx", action="store_true", help="Also write a DOCX alongside the JSON (with 'Papers:' header).")

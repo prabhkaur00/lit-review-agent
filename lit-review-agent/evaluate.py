@@ -2,7 +2,7 @@ import os, json, argparse
 from openai import OpenAI
 from datetime import datetime
 from pathlib import Path
-
+import re
 from qna_parse import load_pairs_from_path, infer_pdfs_from_dataset
 
 DEF_PROMPT_ANSWER = "prompts/prompt_answer.txt"
@@ -10,6 +10,15 @@ DEF_PROMPT_ANSWER_MULTI = "prompts/prompt_answer_multi.txt"
 DEF_PROMPT_EVAL = "prompts/prompt_eval.txt"
 
 def load_text(p): return open(p, "r", encoding="utf-8").read()
+
+def _short_tag(paths, n=8):
+    if not paths:
+        return "papers"
+    first = Path(paths[0]).stem
+    tag = re.sub(r'[^A-Za-z0-9]', '', first).lower()[:n] or "paper"
+    if len(paths) > 1:
+        tag += f"+{len(paths)-1}"
+    return tag
 
 def run(
     pdf_paths,
@@ -23,7 +32,6 @@ def run(
     out_dir="out",
     timestamped=True,
 ):
-    # Normalize/resolve PDFs; allow omission (fallback to dataset)
     if isinstance(pdf_paths, (str, Path)):
         pdf_paths = [str(pdf_paths)]
     pdf_paths = [str(p) for p in (pdf_paths or [])]
@@ -38,19 +46,19 @@ def run(
                 "  - DOCX whose first non-empty line starts with: 'Papers: /abs/a.pdf, /abs/b.pdf'"
             )
 
-    out_dir = Path(out_dir); out_dir.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    out = Path(out_path) if out_path else out_dir / f"results_{ts if timestamped else 'latest'}.json"
+    tag = _short_tag(pdf_paths, n=8)
+    ts = datetime.now().strftime("%m%d_%H%M%S")
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out = Path(out_path) if out_path else out_dir / f"results_{tag}_{ts if timestamped else 'latest'}.json"
 
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-    # Upload PDFs (close file handles promptly)
     uploaded = []
     for p in pdf_paths:
         with open(p, "rb") as fh:
             uploaded.append(client.files.create(file=fh, purpose="assistants"))
 
-    # Choose prompt based on count
     use_multi = len(uploaded) > 1
     if use_multi:
         chosen_prompt_answer_path = (prompt_answer_multi_path or prompt_answer_path or DEF_PROMPT_ANSWER_MULTI)
@@ -66,8 +74,11 @@ def run(
         raise RuntimeError(f"No QA pairs found in dataset: {dataset_path}")
 
     correct_count, results = 0, []
-
-    for ex in dataset_items:
+    print(f"Evaluating {len(dataset_items)} QA pairs with {len(pdf_paths)} PDFs...")
+    for i, ex in enumerate(dataset_items, 1):
+        q, gold = ex["question"], ex["answer"]
+        ex_id = ex.get("id", f"Q{i}")
+        print(f"[{i}/{len(dataset_items)}] Evaluating {ex_id}: {q[:80].replace('\n',' ')}", flush=True)
         q, gold = ex["question"], ex["answer"]
 
         content = [{"type": "input_text", "text": f"{q}\n"}]
@@ -99,7 +110,6 @@ def run(
             "gold_answer": gold,
             "model_answer": pred,
             "correct": is_correct,
-            "judge_raw": judge_text,
         })
 
     summary = {
@@ -113,6 +123,7 @@ def run(
         json.dump({"summary": summary, "results": results}, f, ensure_ascii=False, indent=2)
 
     print(json.dumps(summary, indent=2))
+    print(f"Results saved to: {out}")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
