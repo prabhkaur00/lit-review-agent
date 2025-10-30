@@ -2,12 +2,12 @@ from openai import OpenAI
 import os
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 pdf = client.files.create(
-    file=open("/Users/prabhleenkaur/Desktop/FA25/PICASSO/code/lit-review-agent/sample_paper.pdf", "rb"),
+    file=open("papers/sample_paper.pdf", "rb"),
     purpose="assistants"
 )
 
 pdf2 = client.files.create(
-    file=open("/Users/prabhleenkaur/Desktop/FA25/PICASSO/code/lit-review-agent/papers/DeepSeek_OCR_paper.pdf", "rb"),
+    file=open("papers/DeepSeek_OCR_paper.pdf", "rb"),
     purpose="assistants"
 )
 
@@ -27,6 +27,7 @@ resp = client.responses.create(
             # {"type": "input_text", "text": "What is the edge-state decay length ξ extracted from the dI/dV intensity profile in Fig. 4e, and how does it compare with the theoretical edge-state localization length in Fig. 4a–b?"},
             {"type": "input_file", "file_id": pdf.id},
             {"type": "input_file", "file_id": pdf2.id},
+
         ]
     }]
 )
